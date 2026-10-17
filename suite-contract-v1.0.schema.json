@@ -1,0 +1,920 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:script-sequencer-suite:contract:1.0",
+  "title": "Script Sequencer — Data Contract v1.0",
+  "description": "Data contract for the files Script Sequencer writes. The root validates the sync record (<Script>.sync.json) or one line of the change journal (<Script>.changes.jsonl); other definitions are reserved for future use. Asset metadata tags and the discovery module's return values are validated against their $defs directly, e.g. {\"$ref\": \"urn:script-sequencer-suite:contract:1.0#/$defs/lineAudioTags\"}. Unknown properties are allowed everywhere so that files written by a newer 1.x minor version still validate; readers must ignore what they don't know. Spec: Docs/DataContract.md.",
+  "$comment": "Status: frozen; first shipped with Script Sequencer 0.2.0 (Early Access). Minor versions (1.x) may only add optional properties or enum values; anything else is a 2.0.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/syncRecord"
+    },
+    {
+      "$ref": "#/$defs/journalEntry"
+    },
+    {
+      "$ref": "#/$defs/companionSidecar"
+    }
+  ],
+  "$defs": {
+    "contractVersion": {
+      "description": "MAJOR.MINOR. This schema accepts any 1.x; a reader that sees 2.0 or later must stop with a clear message.",
+      "type": "string",
+      "pattern": "^1\\.(0|[1-9][0-9]*)$",
+      "examples": [
+        "1.0"
+      ]
+    },
+    "sceneId": {
+      "description": "Scene ID: S- plus 6 lowercase hex digits. Stable for the life of the production; never reused.",
+      "type": "string",
+      "pattern": "^S-[0-9a-f]{6}$",
+      "examples": [
+        "S-1a2b3c"
+      ]
+    },
+    "lineId": {
+      "description": "Line ID: L- plus 6 lowercase hex digits. Mocap takes, TTS takes and lip-sync solves are matched to lines through it.",
+      "type": "string",
+      "pattern": "^L-[0-9a-f]{6}$",
+      "examples": [
+        "L-4d5e6f"
+      ]
+    },
+    "shotNoteId": {
+      "description": "Shot-note ID: H- plus 6 lowercase hex digits.",
+      "type": "string",
+      "pattern": "^H-[0-9a-f]{6}$",
+      "examples": [
+        "H-7a8b9c"
+      ]
+    },
+    "unitCode": {
+      "description": "Unit code produced by the naming template. Assigned once, never changed. Must be a valid Unreal asset name.",
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+      "maxLength": 64,
+      "examples": [
+        "sc010",
+        "sc012A",
+        "sc010_sh0020",
+        "sq010_sh0010"
+      ]
+    },
+    "scriptKey": {
+      "description": "Project-relative path to the script, forward slashes, no leading slash, no '..' segments. Identifies the sync record and journal.",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![/\\\\])(?!.*(^|/)\\.\\.(/|$))[^\\\\:]+$",
+      "examples": [
+        "Scripts/Ep01.fountain",
+        "Scripts/Ep02.fdx"
+      ]
+    },
+    "assetPath": {
+      "description": "Unreal long package path of an asset (no object suffix).",
+      "type": "string",
+      "pattern": "^/[A-Za-z0-9_]+(/[A-Za-z0-9_\\-]+)+$",
+      "examples": [
+        "/Game/Script/Ep01/Sequences/sc010",
+        "/Game/Script/Ep01/Scratch/SW_Scratch_L_4d5e6f"
+      ]
+    },
+    "sha256": {
+      "description": "Lowercase hex SHA-256.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "generator": {
+      "description": "Which suite plug-in generated an asset or wrote a file.",
+      "type": "string",
+      "enum": [
+        "ScriptSequencer",
+        "LipSyncManager",
+        "EditBridge"
+      ]
+    },
+    "companionGenerator": {
+      "type": "string",
+      "enum": [
+        "LipSyncManager",
+        "EditBridge"
+      ]
+    },
+    "audioSlot": {
+      "description": "What fills a line's audio slot. 'scratch' is Script Sequencer's placeholder; 'tts', 'recorded' and 'capture' come from a companion or a capture session.",
+      "type": "string",
+      "enum": [
+        "scratch",
+        "tts",
+        "recorded",
+        "capture"
+      ]
+    },
+    "frameRange": {
+      "description": "[start, end) in frames at the sync record's frame_rate. Unit ranges are master-sequence frames; line ranges are frames inside the line's unit sequence. Writers must keep start <= end.",
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "integer",
+          "minimum": 0
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2,
+      "items": false,
+      "examples": [
+        [
+          0,
+          480
+        ]
+      ]
+    },
+    "frameRate": {
+      "description": "Display rate shared by the master and every generated sequence, as a fraction (24/1, 30000/1001).",
+      "type": "object",
+      "required": [
+        "numerator",
+        "denominator"
+      ],
+      "properties": {
+        "numerator": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "denominator": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "examples": [
+        {
+          "numerator": 24,
+          "denominator": 1
+        }
+      ]
+    },
+    "idList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/lineId"
+      },
+      "uniqueItems": true
+    },
+    "unitList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/unitCode"
+      },
+      "uniqueItems": true
+    },
+    "syncRecord": {
+      "title": "Script Sequencer sync record",
+      "description": "<Project>/ScriptSequencer/<Script>.sync.json, the sync record. Written only by Script Sequencer, atomically (temp file, then rename). Everything outside 'internal' is the contract.",
+      "type": "object",
+      "required": [
+        "contract_version",
+        "script",
+        "master",
+        "frame_rate",
+        "sync_owner",
+        "journal_seq",
+        "units",
+        "lines"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/contractVersion"
+        },
+        "script": {
+          "type": "object",
+          "required": [
+            "key",
+            "format",
+            "hash"
+          ],
+          "properties": {
+            "key": {
+              "$ref": "#/$defs/scriptKey"
+            },
+            "format": {
+              "type": "string",
+              "enum": [
+                "fountain",
+                "fdx"
+              ]
+            },
+            "hash": {
+              "$ref": "#/$defs/sha256",
+              "description": "SHA-256 of the script file bytes at the last sync."
+            }
+          }
+        },
+        "master": {
+          "$ref": "#/$defs/assetPath",
+          "description": "The master Level Sequence whose Shots track holds the units."
+        },
+        "frame_rate": {
+          "$ref": "#/$defs/frameRate"
+        },
+        "sync_owner": {
+          "description": "user@machine of the one editor allowed to auto-sync this script, or null before the first import finishes.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[^@\\s]+@[^@\\s]+$"
+        },
+        "journal_seq": {
+          "description": "seq of the last journal entry written; 0 when the journal is empty.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "units": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/unit"
+          }
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/line"
+          }
+        },
+        "internal": {
+          "description": "Script Sequencer's private state (numbers, overrides, locks, last model, fingerprints). Not part of the contract; other plug-ins must not read it.",
+          "type": "object"
+        }
+      }
+    },
+    "unit": {
+      "title": "Unit (one section on the master's Shots track)",
+      "type": "object",
+      "required": [
+        "code",
+        "scene",
+        "asset",
+        "state",
+        "range",
+        "owned"
+      ],
+      "properties": {
+        "code": {
+          "$ref": "#/$defs/unitCode"
+        },
+        "scene": {
+          "$ref": "#/$defs/sceneId"
+        },
+        "shot_note": {
+          "description": "Set when structure is one unit per shot note.",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/shotNoteId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "asset": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "state": {
+          "description": "'active': on the Shots track. 'script_cut': removed from the script; the Level Sequence is kept. 'edit_cut': its section was removed by an edit import; never re-added.",
+          "type": "string",
+          "enum": [
+            "active",
+            "script_cut",
+            "edit_cut"
+          ]
+        },
+        "range": {
+          "description": "Section range on the master, or null when the unit has no section.",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/frameRange"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "owned": {
+          "description": "True once a person or an edit import changed the section; Script Sequencer then never changes it.",
+          "type": "boolean"
+        }
+      },
+      "if": {
+        "properties": {
+          "state": {
+            "const": "active"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "range": {
+            "$ref": "#/$defs/frameRange"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "range": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    "line": {
+      "title": "Line (dialogue or action)",
+      "type": "object",
+      "required": [
+        "id",
+        "scene",
+        "unit",
+        "kind",
+        "character",
+        "text",
+        "text_hash",
+        "state",
+        "range",
+        "audio",
+        "owned"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/lineId"
+        },
+        "scene": {
+          "$ref": "#/$defs/sceneId"
+        },
+        "unit": {
+          "$ref": "#/$defs/unitCode"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "dialogue",
+            "action"
+          ]
+        },
+        "character": {
+          "description": "Character name as written in the script, extensions removed. Empty for action lines.",
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "text_hash": {
+          "$ref": "#/$defs/sha256",
+          "description": "SHA-256 of the UTF-8 text with whitespace runs collapsed to one space and ends trimmed. Companions compare it to spot text changes."
+        },
+        "state": {
+          "description": "'active': in the script. 'cut': removed from the script but kept in Sequencer because it is owned.",
+          "type": "string",
+          "enum": [
+            "active",
+            "cut"
+          ]
+        },
+        "range": {
+          "description": "The line's slot inside its unit sequence.",
+          "$ref": "#/$defs/frameRange"
+        },
+        "audio": {
+          "description": "The line's audio slot, or null when scratch audio is off and nothing has claimed the slot.",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/audioSlotState"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "owned": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "dialogue"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "character": {
+                "minLength": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "character": {
+                "maxLength": 0
+              },
+              "audio": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "audioSlotState": {
+      "type": "object",
+      "required": [
+        "slot",
+        "asset",
+        "track",
+        "claimed_by"
+      ],
+      "properties": {
+        "slot": {
+          "$ref": "#/$defs/audioSlot"
+        },
+        "asset": {
+          "$ref": "#/$defs/assetPath"
+        },
+        "track": {
+          "description": "Display name of the dialogue audio track.",
+          "type": "string",
+          "pattern": "^Dialogue_.+$"
+        },
+        "claimed_by": {
+          "description": "The companion that replaced the scratch audio with a contract-tagged take, or null. While claimed, Script Sequencer never regenerates the slot.",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/companionGenerator"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "if": {
+        "properties": {
+          "claimed_by": {
+            "type": "null"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "slot": {
+            "const": "scratch"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "slot": {
+            "not": {
+              "const": "scratch"
+            }
+          }
+        }
+      }
+    },
+    "journalEntry": {
+      "title": "Change journal entry",
+      "description": "One line of <Project>/ScriptSequencer/<Script>.changes.jsonl, appended after the sync record is saved. Keeps the last 1,000 entries; a reader that falls further behind re-reads the sidecar.",
+      "type": "object",
+      "required": [
+        "seq",
+        "time",
+        "contract_version",
+        "source",
+        "lines",
+        "units"
+      ],
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "time": {
+          "description": "UTC time of the sync, RFC 3339.",
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?Z$"
+        },
+        "contract_version": {
+          "$ref": "#/$defs/contractVersion"
+        },
+        "source": {
+          "description": "What the sync found: 'script' (a script save), 'edit' (EDL/OTIO or Edit Bridge changes on the Shots track) or 'mixed' (both).",
+          "type": "string",
+          "enum": [
+            "script",
+            "edit",
+            "mixed"
+          ]
+        },
+        "lines": {
+          "type": "object",
+          "required": [
+            "added",
+            "text_changed",
+            "removed",
+            "moved",
+            "retimed"
+          ],
+          "properties": {
+            "added": {
+              "$ref": "#/$defs/idList"
+            },
+            "text_changed": {
+              "$ref": "#/$defs/idList"
+            },
+            "removed": {
+              "$ref": "#/$defs/idList"
+            },
+            "moved": {
+              "$ref": "#/$defs/idList",
+              "description": "Moved to another scene or unit, or reordered."
+            },
+            "retimed": {
+              "$ref": "#/$defs/idList",
+              "description": "Same text, new range (for example rippled by an earlier line). Lip Sync Manager re-times solves from this."
+            },
+            "claimed": {
+              "$ref": "#/$defs/idList",
+              "description": "Optional. Slots newly claimed by a companion in this sync."
+            },
+            "released": {
+              "$ref": "#/$defs/idList",
+              "description": "Optional. Claimed slots that went back to scratch in this sync."
+            }
+          }
+        },
+        "units": {
+          "type": "object",
+          "required": [
+            "added",
+            "removed",
+            "retimed"
+          ],
+          "properties": {
+            "added": {
+              "$ref": "#/$defs/unitList"
+            },
+            "removed": {
+              "$ref": "#/$defs/unitList"
+            },
+            "retimed": {
+              "$ref": "#/$defs/unitList"
+            }
+          }
+        }
+      }
+    },
+    "companionSidecar": {
+      "title": "Companion plug-in sidecar (common header)",
+      "description": "<Script>.lipsync.json or <Script>.edit.json. Each companion owns its file and may add any fields; this is the part other suite plug-ins may rely on. No plug-in writes another plug-in's files.",
+      "type": "object",
+      "required": [
+        "contract_version",
+        "generator",
+        "script",
+        "journal_seq_read"
+      ],
+      "properties": {
+        "contract_version": {
+          "$ref": "#/$defs/contractVersion"
+        },
+        "generator": {
+          "$ref": "#/$defs/companionGenerator"
+        },
+        "script": {
+          "$ref": "#/$defs/scriptKey"
+        },
+        "journal_seq_read": {
+          "description": "The last Script Sequencer journal seq this companion has handled.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "claims": {
+          "description": "Audio slots this companion has claimed.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "line",
+              "slot",
+              "asset"
+            ],
+            "properties": {
+              "line": {
+                "$ref": "#/$defs/lineId"
+              },
+              "slot": {
+                "$ref": "#/$defs/audioSlot",
+                "not": {
+                  "const": "scratch"
+                }
+              },
+              "asset": {
+                "$ref": "#/$defs/assetPath"
+              },
+              "take": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "assetTags": {
+      "title": "Asset metadata tags (common to every generated asset)",
+      "description": "Unreal asset metadata (EditorAssetLibrary.set_metadata_tag), so every value is a string. Validate the tag map of an asset against the def that matches its class.",
+      "type": "object",
+      "required": [
+        "suite.contract",
+        "suite.generator",
+        "suite.script"
+      ],
+      "properties": {
+        "suite.contract": {
+          "$ref": "#/$defs/contractVersion"
+        },
+        "suite.generator": {
+          "$ref": "#/$defs/generator"
+        },
+        "suite.script": {
+          "$ref": "#/$defs/scriptKey"
+        },
+        "suite.unit": {
+          "$ref": "#/$defs/unitCode"
+        },
+        "suite.scene": {
+          "$ref": "#/$defs/sceneId"
+        },
+        "suite.line": {
+          "$ref": "#/$defs/lineId"
+        },
+        "suite.character": {
+          "type": "string",
+          "minLength": 1
+        },
+        "suite.slot": {
+          "$ref": "#/$defs/audioSlot"
+        },
+        "suite.take": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*$"
+        }
+      },
+      "patternProperties": {
+        "^suite\\.": {
+          "type": "string"
+        }
+      }
+    },
+    "unitSequenceTags": {
+      "title": "Tags on a unit's Level Sequence",
+      "allOf": [
+        {
+          "$ref": "#/$defs/assetTags"
+        }
+      ],
+      "required": [
+        "suite.unit",
+        "suite.scene"
+      ]
+    },
+    "lineAudioTags": {
+      "title": "Tags on a line's Sound Wave (scratch or a take)",
+      "allOf": [
+        {
+          "$ref": "#/$defs/assetTags"
+        }
+      ],
+      "required": [
+        "suite.line",
+        "suite.character",
+        "suite.slot"
+      ],
+      "if": {
+        "properties": {
+          "suite.generator": {
+            "const": "ScriptSequencer"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "suite.slot": {
+            "const": "scratch"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "suite.slot": {
+            "not": {
+              "const": "scratch"
+            }
+          }
+        }
+      }
+    },
+    "lineSolveTags": {
+      "title": "Tags on a lip-sync solve asset for a line",
+      "allOf": [
+        {
+          "$ref": "#/$defs/assetTags"
+        }
+      ],
+      "required": [
+        "suite.line"
+      ],
+      "properties": {
+        "suite.generator": {
+          "const": "LipSyncManager"
+        }
+      }
+    },
+    "discovery": {
+      "title": "Discovery module return values",
+      "description": "What suite_script_sequencer / suite_lip_sync / suite_edit_bridge report: {plugin, contract_versions(), capabilities()}.",
+      "type": "object",
+      "required": [
+        "plugin",
+        "contract_versions",
+        "capabilities"
+      ],
+      "properties": {
+        "plugin": {
+          "$ref": "#/$defs/generator"
+        },
+        "contract_versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contractVersion"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "uniqueItems": true
+        }
+      },
+      "examples": [
+        {
+          "plugin": "ScriptSequencer",
+          "contract_versions": [
+            "1.0"
+          ],
+          "capabilities": [
+            "sync_record",
+            "journal",
+            "slots",
+            "edit_adoption"
+          ]
+        }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "contract_version": "1.0",
+      "script": {
+        "key": "Scripts/Ep01.fountain",
+        "format": "fountain",
+        "hash": "3f2c8a6e1b0d4f9a7c5e2b8d6a4f1c3e9b7d5a2c8e6f4b1d3a9c7e5b2d8f6a40"
+      },
+      "master": "/Game/Script/Ep01/Ep01_Master",
+      "frame_rate": {
+        "numerator": 24,
+        "denominator": 1
+      },
+      "sync_owner": "anna@ws-anim-04",
+      "journal_seq": 42,
+      "units": [
+        {
+          "code": "sc010",
+          "scene": "S-1a2b3c",
+          "shot_note": null,
+          "asset": "/Game/Script/Ep01/Sequences/sc010",
+          "state": "active",
+          "range": [
+            0,
+            480
+          ],
+          "owned": false
+        },
+        {
+          "code": "sc020",
+          "scene": "S-2b3c4d",
+          "shot_note": null,
+          "asset": "/Game/Script/Ep01/Sequences/sc020",
+          "state": "edit_cut",
+          "range": null,
+          "owned": true
+        }
+      ],
+      "lines": [
+        {
+          "id": "L-4d5e6f",
+          "scene": "S-1a2b3c",
+          "unit": "sc010",
+          "kind": "dialogue",
+          "character": "ANNA",
+          "text": "It's been boiling for an hour.",
+          "text_hash": "9c1e0b7a3d5f2e8c6a4b1d9f7e5c3a2b8d6f4e1c9a7b5d3f2e8c6a4b1d9f7e5c",
+          "state": "active",
+          "range": [
+            240,
+            312
+          ],
+          "audio": {
+            "slot": "scratch",
+            "asset": "/Game/Script/Ep01/Scratch/SW_Scratch_L_4d5e6f",
+            "track": "Dialogue_ANNA",
+            "claimed_by": null
+          },
+          "owned": false
+        },
+        {
+          "id": "L-01c4aa",
+          "scene": "S-1a2b3c",
+          "unit": "sc010",
+          "kind": "action",
+          "character": "",
+          "text": "Anna stares at the kettle.",
+          "text_hash": "0d4e6f8a1b3c5d7e9f2a4b6c8d0e1f3a5b7c9d2e4f6a8b0c1d3e5f7a9b2c4d6e",
+          "state": "active",
+          "range": [
+            48,
+            216
+          ],
+          "audio": null,
+          "owned": false
+        }
+      ],
+      "internal": {
+        "numbers": {
+          "S-1a2b3c": "010",
+          "S-2b3c4d": "020"
+        }
+      }
+    },
+    {
+      "seq": 42,
+      "time": "2026-10-12T14:03:11Z",
+      "contract_version": "1.0",
+      "source": "script",
+      "lines": {
+        "added": [
+          "L-91aa02"
+        ],
+        "text_changed": [
+          "L-4d5e6f"
+        ],
+        "removed": [],
+        "moved": [],
+        "retimed": [
+          "L-5e6f70"
+        ]
+      },
+      "units": {
+        "added": [],
+        "removed": [],
+        "retimed": [
+          "sc020"
+        ]
+      }
+    },
+    {
+      "contract_version": "1.0",
+      "generator": "LipSyncManager",
+      "script": "Scripts/Ep01.fountain",
+      "journal_seq_read": 41,
+      "claims": [
+        {
+          "line": "L-4d5e6f",
+          "slot": "tts",
+          "asset": "/Game/Script/Ep01/Takes/SW_TTS_L_4d5e6f_t1",
+          "take": 1
+        }
+      ]
+    }
+  ]
+}
