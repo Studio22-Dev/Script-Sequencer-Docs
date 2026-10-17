@@ -1,0 +1,5 @@
+# GitHub Pages settings for the Script Sequencer docs site.
+theme: jekyll-theme-cayman
+title: Script Sequencer
+description: Screenplay to Sequencer for Unreal Engine. Fountain and .fdx import that stays in sync as the script changes.
+show_downloads: false

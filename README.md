@@ -1,4 +1,32 @@
-# Script Sequencer — Quick Start
+# Script Sequencer
+
+Script-to-animatic scaffolding for real-time CG animation in Unreal Engine. Script Sequencer
+builds Level Sequences from a Fountain or Final Draft (`.fdx`) screenplay and keeps them in
+step as the script changes, without overwriting anyone's work.
+
+**Version** 0.2.0 (Early Access) · **Unreal Engine** 5.6, 5.7, 5.8 (editor only) · **Platforms** Windows, Mac  
+**Get it** Fab listing coming soon · **Support** [studio22.development@gmail.com](mailto:studio22.development@gmail.com)
+
+This page is the plug-in's Quick Start, the same guide that ships in its `Docs` folder.
+
+## Contents
+
+- [Quick start](#quick-start)
+- [Menu](#menu)
+- [Automation presets](#automation-presets)
+- [Shots and cameras](#shots-and-cameras)
+- [Final Draft (.fdx)](#final-draft-fdx)
+- [Naming and folders](#naming-and-folders)
+- [What the plug-in will and won't change](#what-the-plug-in-will-and-wont-change)
+- [Working with the edit (EDL and OTIO)](#working-with-the-edit-edl-and-otio)
+- [Working in a team](#working-in-a-team)
+- [Tips](#tips)
+- [Data contract, tags and your own tools](#data-contract-tags-and-your-own-tools)
+- [Files](#files)
+- [Known limitations (Early Access)](#known-limitations-early-access)
+- [Support](#support)
+
+## Quick start
 
 **Requires** Unreal Engine 5.8, 5.7 or 5.6 (editor only; Windows or Mac). On older engine
 versions, the plug-in still loads but logs a warning, and some features may not work.
