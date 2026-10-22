@@ -1,11 +1,10 @@
 # Script Sequencer
-
 Script-to-animatic scaffolding for real-time CG animation in Unreal Engine. Script Sequencer
 builds Level Sequences from a Fountain or Final Draft (`.fdx`) screenplay and keeps them in
 sync as the script changes, without overwriting anyone's work.
 
 **Version** 0.2.0 (Early Access) · **Unreal Engine** 5.6, 5.7, 5.8 (editor only) · **Platforms** Windows, Mac  
-**Download on Fab** https://fab.com/s/d64f0cb6cf3e · **Support** [studio22.development@gmail.com](mailto:studio22.development@gmail.com)
+**Download on Fab** [https://fab.com/s/d64f0cb6cf3e](https://fab.com/s/d64f0cb6cf3e) · **Support** [studio22.development@gmail.com](mailto:studio22.development@gmail.com)
 
 ## Contents
 - [Quick start](#quick-start)
@@ -99,8 +98,6 @@ a minute), 3.5 for action, with gaps, lead-ins, and minimum lengths, all of whic
   It never places, animates, moves or deletes a camera.
 
 ## Final Draft (.fdx)
-Final Draft scripts are **read, never edited**:
-
 - Scene numbers become codes: scene `12` is `sc012`, an inserted `12A` becomes `sc012A`.
 - Dialogue, action, character extensions such as `(V.O.)`, dual dialogue and **Shot** paragraphs are read.
   Parentheticals, transitions, cast lists and act breaks are skipped. Revision marks are ignored.
@@ -108,9 +105,8 @@ Final Draft scripts are **read, never edited**:
   earlier versions by scene number and by how similar the text is, so a line rewritten beyond recognition
   counts as a new line (its old scratch audio and marker are replaced). Anything you've taken ownership of
   is still kept.
-- **If an .fdx file won't import**, open it in Final Draft and save it again, then retry. If it still fails,
-  export it as Fountain from a writing app that reads .fdx files (Fade In, Highland and WriterDuet), and import
-  the `.fountain` file instead.
+- **If an .fdx file won't import**, open it in Final Draft and save it again, then retry. If it still fails,    export it as Fountain from a writing app that reads .fdx files (Fade In, Highland and WriterDuet), and
+  import the `.fountain` file instead.
 
 ## Naming and folders
 Names are chosen on the settings page under **Structure and Naming** and are **fixed per
@@ -162,7 +158,6 @@ Three things shape the master sequence, and each has one job:
   (unless that item is handed back).
 
 In practice:
-
 - Import an EDL onto the Shots track, or edit the sections by hand. Retimed and moved
   sections are kept exactly where the edit places them. Later script changes flow around them.
 - A section the edit removed is cut in edit. Its Level Sequence and everything inside it is kept.
@@ -231,13 +226,11 @@ Script Sequencer writes what it generates in a documented file format, the **dat
 
 ### Content Browser filters
 The plug-in registers the `suite.*` keys with the Asset Registry when the editor starts, so you can type,
-for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a search finds nothing, add the keys yourself: open **Edit > Project Settings > Game > Asset Manager**, find **Asset Registry > Metadata Tags For Asset Registry**, add `suite.contract`, `suite.generator`, `suite.script`, `suite.unit`, `suite.scene`, `suite.line`,
-`suite.character`, `suite.slot` and `suite.take`, and restart the editor.
+for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a search finds nothing, add the keys yourself: open **Edit > Project Settings > Game > Asset Manager**, find **Asset Registry > Metadata Tags For Asset Registry**, add `suite.contract`, `suite.generator`, `suite.script`, `suite.unit`, `suite.scene`, `suite.line`, `suite.character`, `suite.slot` and `suite.take`, and restart the editor.
 
 ## Files
 - Sync record: `<Project>/ScriptSequencer/<ScriptName>.sync.json`, the plug-in's record of what it generated
-  from the script and where. Comparing it with Sequencer is how the plug-in knows what you've changed. Check it
-  into source control with the generated assets. Only Script Sequencer writes it. Don't edit it by hand.
+  from the script and where. Comparing it with Sequencer is how the plug-in knows what you've changed. Check    it into source control with the generated assets. Only Script Sequencer writes it. Don't edit it by hand.
 - Change journal: `<Project>/ScriptSequencer/<ScriptName>.changes.jsonl`, one line per sync (the last 1,000).
   Check it in with the sync record.
 - Scratch audio: one silent Sound Wave of about 3 KB per dialogue line, in `/Game/Script/<Episode>/Scratch/`.
