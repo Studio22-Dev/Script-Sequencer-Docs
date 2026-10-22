@@ -5,7 +5,7 @@ builds Level Sequences from a Fountain or Final Draft (`.fdx`) screenplay and ke
 step as the script changes, without overwriting anyone's work.
 
 **Version** 0.2.0 (Early Access) · **Unreal Engine** 5.6, 5.7, 5.8 (editor only) · **Platforms** Windows, Mac  
-**Get it** Fab listing coming soon · **Support** [studio22.development@gmail.com](mailto:studio22.development@gmail.com)
+**Download on Fab** [https://fab.com/s/d64f0cb6cf3e] · **Support** [studio22.development@gmail.com](mailto:studio22.development@gmail.com)
 
 This page is the plug-in's Quick Start, the same guide that ships in its `Docs` folder.
 
@@ -28,10 +28,10 @@ This page is the plug-in's Quick Start, the same guide that ships in its `Docs` 
 
 ## Quick start
 
-**Requires** Unreal Engine 5.8, 5.7 or 5.6 (editor only; Windows or Mac). On older engine
+Requires Unreal Engine 5.8, 5.7 or 5.6 (editor only; Windows or Mac). On older engine
 versions, the plug-in still loads but logs a warning, and some features may not work.
 
-**Where things are.** Installed from Fab, the plug-in lives in your engine's
+Installed from Fab, the plug-in lives in your engine's
 `Engine/Plugins/Marketplace/ScriptSequencer/` folder. This guide, the data contract
 and three sample scripts (`Sample.fountain`, `Sample_Shots.fountain`, `Sample.fdx`) are in
 its `Docs` folder. Keep scripts inside your project, for example in `<Project>/Scripts/`.
