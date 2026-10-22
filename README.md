@@ -5,12 +5,9 @@ builds Level Sequences from a Fountain or Final Draft (`.fdx`) screenplay and ke
 sync as the script changes, without overwriting anyone's work.
 
 **Version** 0.2.0 (Early Access) · **Unreal Engine** 5.6, 5.7, 5.8 (editor only) · **Platforms** Windows, Mac  
-**Download on Fab** [https://fab.com/s/d64f0cb6cf3e] · **Support** [studio22.development@gmail.com](mailto:studio22.development@gmail.com)
-
-This page is the plug-in's Quick Start, the same guide that ships in its `Docs` folder.
+**Download on Fab** https://fab.com/s/d64f0cb6cf3e · **Support** [studio22.development@gmail.com](mailto:studio22.development@gmail.com)
 
 ## Contents
-
 - [Quick start](#quick-start)
 - [Menu](#menu)
 - [Automation presets](#automation-presets)
@@ -27,7 +24,6 @@ This page is the plug-in's Quick Start, the same guide that ships in its `Docs` 
 - [Support](#support)
 
 ## Quick start
-
 Requires Unreal Engine 5.8, 5.7 or 5.6 (editor only; Windows or Mac). On older engine
 versions, the plug-in still loads but logs a warning, and some features may not work.
 
