@@ -28,7 +28,7 @@ versions, the plug-in still loads but logs a warning, and some features may not 
 
 Installed from Fab, the plug-in lives in your engine's
 `Engine/Plugins/Marketplace/ScriptSequencer/` folder. This guide, the data contract
-and three sample scripts (`Sample.fountain`, `Sample_Shots.fountain`, `Sample.fdx`) are in
+and three sample scripts (`Sample.fountain`, `Sample_Shots.fountain`, `Sample_FDX.fdx`) are in
 its `Docs` folder. Keep scripts inside your project, for example in `<Project>/Scripts/`.
 It is best to make a backup of your script before importing. The plug-in records each script
 by its path in the project, so the same path works on every machine.
@@ -105,7 +105,8 @@ a minute), 3.5 for action, with gaps, lead-ins, and minimum lengths, all of whic
   earlier versions by scene number and by how similar the text is, so a line rewritten beyond recognition
   counts as a new line (its old scratch audio and marker are replaced). Anything you've taken ownership of
   is still kept.
-- **If an .fdx file won't import**, open it in Final Draft and save it again, then retry. If it still fails,    export it as Fountain from a writing app that reads .fdx files (Fade In, Highland and WriterDuet), and
+- **If an .fdx file won't import**, open it in Final Draft and save it again, then retry. If it still fails,
+  export it as Fountain from a writing app that reads .fdx files (Fade In, Highland and WriterDuet), and
   import the `.fountain` file instead.
 
 ## Naming and folders
@@ -130,6 +131,10 @@ To import with a different scheme without touching project settings:
 `ss.import_script("<path>/Ep02.fountain", naming_preset="sequence_shot")`. Two scripts
 can't share a folder: give each its own `Episode:` value, or put `{script}` in the Root
 Template.
+
+Each script in a project also needs its own file name, ignoring the extension: `Ep01.fountain`
+and `Ep01.fdx` can't both be imported, because the plug-in tells scripts apart by name.
+Importing the second one is refused with a message; rename one of them first.
 
 To change the structure or naming of a script that's already imported, import it again into
 a new folder; existing sequences are never renamed.
@@ -230,11 +235,12 @@ for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a sea
 
 ## Files
 - Sync record: `<Project>/ScriptSequencer/<ScriptName>.sync.json`, the plug-in's record of what it generated
-  from the script and where. Comparing it with Sequencer is how the plug-in knows what you've changed. Check    it into source control with the generated assets. Only Script Sequencer writes it. Don't edit it by hand.
+  from the script and where. Comparing it with Sequencer is how the plug-in knows what you've changed. Check
+  it into source control with the generated assets. Only Script Sequencer writes it. Don't edit it by hand.
 - Change journal: `<Project>/ScriptSequencer/<ScriptName>.changes.jsonl`, one line per sync (the last 1,000).
   Check it in with the sync record.
 - Scratch audio: one silent Sound Wave of about 3 KB per dialogue line, in `/Game/Script/<Episode>/Scratch/`.
-- `Docs/DataContract.md` and `Docs/suite-contract-v1.0.schema.json`: the data contract, the technical spec of
+- `Docs/DataContract.md` and `Docs/suite_contract_v1.0.schema.json`: the data contract, the technical spec of
   these files.
 
 ## Known limitations (Early Access)
