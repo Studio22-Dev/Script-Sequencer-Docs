@@ -23,7 +23,7 @@ Owners get 0.3.0 at no extra cost
 - Flags on lines rewritten after they were captured
 - Batch import for series: a folder of episode scripts, one grouped report
 
-Every new feature is off until you turn it on, so existing projects keep working as they do now.
+Every new feature is off by default until you turn it on, so existing projects keep working as they do now.
 
 ## Follow along
 
