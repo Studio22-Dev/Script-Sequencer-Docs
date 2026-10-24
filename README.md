@@ -22,7 +22,7 @@ sync as the script changes, without overwriting anyone's work.
 - [Known limitations (Early Access)](#known-limitations-early-access)
 - [Support](#support)
 
-## Quick start
+## Quick Start
 Requires Unreal Engine 5.8, 5.7 or 5.6 (editor only; Windows or Mac). On older engine
 versions, the plug-in still loads but logs a warning, and some features may not work.
 
@@ -86,7 +86,7 @@ Placeholder timing lengths come from word count: 2.5 words a second for dialogue
 a minute), 3.5 for action, with gaps, lead-ins, and minimum lengths, all of which you can change under
 **Placeholder Timing** on the settings page.
 
-## Shots and cameras
+## Shots and Cameras
 - A shot note on its own line, such as `[[SHOT: MCU Anna, slow push]]`, starts a new shot. In Final Draft,
   a **Shot** paragraph does the same.
 - With *Structure: one shot section per [[SHOT:]] note* (chosen at import), each note becomes its own shot
@@ -139,7 +139,7 @@ Importing the second one is refused with a message; rename one of them first.
 To change the structure or naming of a script that's already imported, import it again into
 a new folder; existing sequences are never renamed.
 
-## What the plug-in will and won't change
+## What The Plug-in Edits
 - It changes only markers, scratch audio sections, shot sections and camera cuts it created.
 - If you move, edit, replace or delete one of those, it becomes **owned** by you and is never changed
   again. Editing any camera cut in a sequence hands that sequence's cuts to you. The report, found in
@@ -154,7 +154,7 @@ a new folder; existing sequences are never renamed.
   saved together. To go back, revert the script and save it, or revert the assets and the
   sync record together in source control.
 
-## Working with the edit (EDL and OTIO)
+## Working With The Edit (EDL and OTIO)
 Three things shape the master sequence, and each has one job:
 
 - **The script decides what exists**: scenes, lines and shot notes.
@@ -174,7 +174,7 @@ In practice:
 - Every report has an **Edit vs script** list: scenes with no section on the Shots track, and sections
   with no scene in the script (edit-only shots). Neither is changed.
 
-## Working In a Team
+## Working In A Team
 Several people can open the same project through source control (Perforce, Git LFS 2, or any provider
 set up under **Revision Control** in the editor's toolbar). A single Multi-User session can also be joined.
 One editor per script turns its saves into Sequencer changes:
