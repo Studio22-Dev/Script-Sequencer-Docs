@@ -1,4 +1,5 @@
 # Script Sequencer
+
 Script-to-animatic scaffolding for real-time CG animation in Unreal Engine. Script Sequencer
 builds Level Sequences from a Fountain or Final Draft (`.fdx`) screenplay and keeps them in
 sync as the script changes, without overwriting anyone's work.
