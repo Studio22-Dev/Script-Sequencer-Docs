@@ -60,7 +60,7 @@ by its path in the project, so the same path works on every machine.
 - **Resume Watching Scripts** — turn live updates back on.
 - **About Script Sequencer...** — the plug-in, data contract and engine versions.
 
-## Automation presets
+## Automation Presets
 Teams: commit your project's Config/DefaultEditor.ini so everyone shares those settings.
 
 | Preset | Result | Timing |
@@ -109,7 +109,7 @@ a minute), 3.5 for action, with gaps, lead-ins, and minimum lengths, all of whic
   export it as Fountain from a writing app that reads .fdx files (Fade In, Highland and WriterDuet), and
   import the `.fountain` file instead.
 
-## Naming and folders
+## Naming and Folders
 Names are chosen on the settings page under **Structure and Naming** and are **fixed per
 script when it's imported**, so a later change to project settings never renames existing work.
 
@@ -174,7 +174,7 @@ In practice:
 - Every report has an **Edit vs script** list: scenes with no section on the Shots track, and sections
   with no scene in the script (edit-only shots). Neither is changed.
 
-## Working in a team
+## Working In a Team
 Several people can open the same project through source control (Perforce, Git LFS 2, or any provider
 set up under **Revision Control** in the editor's toolbar). A single Multi-User session can also be joined.
 One editor per script turns its saves into Sequencer changes:
@@ -218,7 +218,7 @@ One editor per script turns its saves into Sequencer changes:
 
 - Scripts edited while the editor was closed are synced about 5 seconds after startup.
 
-## Data contract, tags and your own tools
+## Data Contract, Tags and Your Own Tools
 Script Sequencer writes what it generates in a documented file format, the **data contract**
 (`Docs/DataContract.md`; a technical spec), so your own pipeline scripts and tools can read it.
 
@@ -229,7 +229,7 @@ Script Sequencer writes what it generates in a documented file format, the **dat
 - Replacing scratch audio with your own sound (a recorded take, say) changes the line to become
   owned and its audio is never touched by the plug-in.
 
-### Content Browser filters
+### Content Browser Filters
 The plug-in registers the `suite.*` keys with the Asset Registry when the editor starts, so you can type,
 for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a search finds nothing, add the keys yourself: open **Edit > Project Settings > Game > Asset Manager**, find **Asset Registry > Metadata Tags For Asset Registry**, add `suite.contract`, `suite.generator`, `suite.script`, `suite.unit`, `suite.scene`, `suite.line`, `suite.character`, `suite.slot` and `suite.take`, and restart the editor.
 
@@ -243,7 +243,7 @@ for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a sea
 - `Docs/DataContract.md` and `Docs/suite_contract_v1.0.schema.json`: the data contract, the technical spec of
   these files.
 
-## Known limitations (Early Access)
+## Known Limitations (Early Access)
 - Built for CG productions in Unreal. Live-action workflows have limited support.
 - Final Draft import is read-only (see above). Writing IDs back into `.fdx` files and revision reports are
   planned for a future update.
