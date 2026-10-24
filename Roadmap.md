@@ -11,7 +11,7 @@ Script Sequencer turns a Fountain or Final Draft screenplay into a Sequencer str
 - EDL and OTIO edits respected
 - One machine syncs each script, tested with Perforce and Git LFS
 
-## Next: 0.3.0, in development
+## Next: 0.3.0, In Development
 
 - A report window: each sync's changes in one list, with a choice per warning (ripple, extend, keep or remove)
 - Revision-aware reports for Final Draft scripts (revision colors)
@@ -23,8 +23,8 @@ Script Sequencer turns a Fountain or Final Draft screenplay into a Sequencer str
 
 Every new feature is off by default until you turn it on, so existing projects keep working as they do now.
 
-## Follow along
+## Follow Along
 
-- [Forum thread](<forum link>): progress posts and short clips as each part works. Questions and requests go here too.
+- [Forum thread](https://forums.unrealengine.com/t/studio22-dev-script-sequencer-early-access/2843536): progress posts and short clips as each part works. Questions and requests go here too.
 - [YouTube](<channel link>): an overview and a 5-minute tutorial
 - [Get it on Fab](https://fab.com/s/d64f0cb6cf3e)
