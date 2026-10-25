@@ -13,7 +13,7 @@ Script Sequencer turns a Fountain or Final Draft screenplay into a Sequencer str
 
 ## Next: 0.3.0, In Development
 
-- A report window: each sync's changes in one list, with a choice per warning (ripple, extend, keep or remove)
+- A report window: each sync's changes in one list, with a choice per change (ripple, extend, keep or remove)
 - Revision-aware reports for Final Draft scripts (revision colors)
 - A casting table: each character gets an empty binding of its Blueprint or MetaHuman in every scene sequence
 - Initial placeholder camera aiming to speaking character in scenes with two or more characters
