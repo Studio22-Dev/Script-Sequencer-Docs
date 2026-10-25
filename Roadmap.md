@@ -2,7 +2,7 @@
 
 Script Sequencer turns a Fountain or Final Draft screenplay into a Sequencer structure in Unreal Engine 5.6–5.8, and keeps it in sync as the script changes without overwriting anyone's work. Windows and Mac.
 
-## Now: 0.2.0, on Fab
+## Now: 0.2.1, on Fab
 
 - A master sequence with a shot per scene, or per shot note
 - Markers and silent scratch audio for every line
