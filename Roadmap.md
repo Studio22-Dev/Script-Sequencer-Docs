@@ -16,10 +16,12 @@ Script Sequencer turns a Fountain or Final Draft screenplay into a Sequencer str
 - A report window: each sync's changes in one list, with a choice per warning (ripple, extend, keep or remove)
 - Revision-aware reports for Final Draft scripts (revision colors)
 - A casting table: each character gets an empty binding of its Blueprint or MetaHuman in every scene sequence
+- Initial placeholder camera aiming to speaking character in scenes with two or more characters
 - Take Recorder slates set from scene codes, with each take recorded against the script lines it covers, virtual-camera recordings included
 - Capture lists per scene for the stage, as CSV or Markdown, plus a slate export for Mocap Manager
 - Flags on lines rewritten after they were captured
 - Batch import for series: a folder of episode scripts, one grouped report
+- Data contract 1.1 ([draft](DataContract-1.1.md)): takes recorded per line, casting, revision sets, episodes.
 
 Every new feature is off by default until you turn it on, so existing projects keep working as they do now.
 
