@@ -1,7 +1,3 @@
----
-title: Script Sequencer data contract 1.1 (draft)
----
-
 # Script Sequencer data contract 1.1 (draft)
 
 > **Draft: may change until Script Sequencer 0.3.0 ships.** Script Sequencer 0.2.x writes
