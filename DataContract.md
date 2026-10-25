@@ -1,4 +1,5 @@
 # Script Sequencer data contract v1.0
+> Contract 1.1 is coming with Script Sequencer 0.3.0. See the [draft 1.1 page](DataContract-1.1.md). Everything on this page stays valid in 1.1.
 
 **This is a technical spec.** "Data contract" is the software term for a file format that several programs promise to read and write the same way. This page describes the files and asset tags Script Sequencer writes, so your own tools and pipeline scripts can read them. It grants no rights and adds no terms; your Fab license covers that.
 
