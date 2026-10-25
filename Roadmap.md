@@ -26,5 +26,5 @@ Every new feature is off by default until you turn it on, so existing projects k
 ## Follow Along
 
 - [Forum thread](https://forums.unrealengine.com/t/studio22-dev-script-sequencer-early-access/2843536): progress posts and short clips as each part works. Questions and requests go here too.
-- [YouTube](<channel link>): an overview and a 5-minute tutorial
+- [YouTube](https://www.youtube.com/@Studio-fd5cc): an overview and a 5-minute tutorial
 - [Get it on Fab](https://fab.com/s/d64f0cb6cf3e)
