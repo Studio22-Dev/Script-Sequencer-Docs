@@ -140,6 +140,30 @@ Importing the second one is refused with a message; rename one of them first.
 To change the structure or naming of a script that's already imported, import it again into
 a new folder; existing sequences are never renamed.
 
+## The report window
+
+It's on by default: Project Settings > Plugins > Script Sequencer > Report >
+Report window, or for one script ss.configure("Episode01", report_window=False)
+to turn it off. After a script save, Script Sequencer lists what changed, grouped by scene. A change
+that needs a decision has a dropdown:
+
+| Change | Choices |
+|---|---|
+| A scene's dialogue no longer fits its shot (timing on hold) | Ripple later shots · Extend the shot · Ignore |
+| A scene's dialogue now needs less time than its shot (timing on hold) | Shorten and Ripple · Keep |
+| A line you edited by hand was cut from the script | Remove anyway · Keep |
+| The script changed under audio or a marker you edited | Reset to script · Keep |
+
+- **Ask first** (sync="review"): the window opens before anything changes.
+  *Apply* uses your choices; *Not now* changes nothing.
+- **Apply on every save**: the changes apply, and the window opens only when
+  something new needs your decision. Choices take effect straight away.
+- Every change shows its dropdown each time. To skip changes you've already
+  answered with Ignore, Keep or Dismiss, turn on Report > Remember choices:
+  you're then asked again only if the scene or line changes.
+- Ripple and Extend only move what Script Sequencer generated. A shot you
+  moved or trimmed, or one placed by an EDL or OTIO import, never moves.
+
 ## What The Plug-in Edits
 - It changes only markers, scratch audio sections, shot sections and camera cuts it created.
 - If you move, edit, replace or delete one of those, it becomes **owned** by you and is never changed
