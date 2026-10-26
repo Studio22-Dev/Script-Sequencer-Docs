@@ -101,7 +101,11 @@ a minute), 3.5 for action, with gaps, lead-ins, and minimum lengths, all of whic
 ## Final Draft (.fdx)
 - Scene numbers become codes: scene `12` is `sc012`, an inserted `12A` becomes `sc012A`.
 - Dialogue, action, character extensions such as `(V.O.)`, dual dialogue and **Shot** paragraphs are read.
-  Parentheticals, transitions, cast lists and act breaks are skipped. Revision marks are ignored.
+  Parentheticals, transitions, cast lists and act breaks are skipped.
+- **Revision sets.** Once revision mode is on, or any text is marked, the report and the sync record name
+  the current set (First Revision, Second Revision, ...). Each changed line is tagged with the newest set
+  marked on it, and the report adds up the changed lines per set. A line keeps its set when you clear the
+  marks, until its text changes again.
 - The file is never changed. Final Draft 13 gives every paragraph an ID of its own and keeps it when you
   edit the text. Script Sequencer follows each line by that ID, so a line rewritten beyond recognition
   keeps its scratch audio and marker, as in a Fountain script with ID notes. A pasted copy of a line is a
@@ -157,6 +161,7 @@ that needs a decision has a dropdown:
 | A scene's dialogue now needs less time than its shot (timing on hold) | Shorten and Ripple · Keep |
 | A line you edited by hand was cut from the script | Remove anyway · Keep |
 | The script changed under audio or a marker you edited | Reset to script · Keep |
+| A line you edited by hand is in a scene that was merged into another | Remove anyway · Keep |
 
 - **Ask first** (sync="review"): the window opens before anything changes.
   *Apply* uses your choices, *Not now* changes nothing.
@@ -167,6 +172,15 @@ that needs a decision has a dropdown:
   you're then asked again only if the scene or line changes.
 - Ripple and Extend only move what Script Sequencer generated. A shot you
   moved or trimmed, or one placed by an EDL or OTIO import, never moves.
+- **Revisions.** The window's title names the script's current revision, such
+  as *Second Revision* in Final Draft. In a Fountain script, add a title page
+  line such as `Revision: Blue` to name it.
+- **Merged scenes.** When you delete a scene heading so two scenes become one,
+  the scene that brought the most lines keeps its sequence (on a tie, the
+  earlier one). The other scene's shot comes off the Shots track, but its Level
+  Sequence stays, with anything you edited in it. Each line you edited there is
+  listed: *Remove anyway* moves the line into the merged scene as a new scratch
+  line, *Keep* leaves it where it is.
 
 ## What The Plug-in Edits
 - It changes only markers, scratch audio sections, shot sections and camera cuts it created.
@@ -275,7 +289,7 @@ for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a sea
 ## Known Limitations (Early Access)
 - Built for virtual/CG productions in Unreal. Live-action workflows have limited support.
 - Final Draft files are never written to. Lines are followed by Final Draft's own paragraph IDs (Final Draft
-  13). Files without them are matched by text. Revision reports are planned for a future update.
+  13). Files without them are matched by text. A line's revision set is the newest one marked on its text.
 - Scratch audio is silence: placeholder timing, not a voice. Timing is estimated from word count unless held.
 - Take Recorder takes are protected as owned content. Script-driven take slates are planned for a future update.
 - One editor per script syncs automatically, others sync on request. Batch import across episodes is planned.
