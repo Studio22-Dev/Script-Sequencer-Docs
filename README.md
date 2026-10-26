@@ -24,7 +24,7 @@ sync as the script changes, without overwriting anyone's work.
 - [Support](#support)
 
 ## Quick Start
-Requires Unreal Engine 5.8, 5.7 or 5.6 (editor only; Windows or Mac). On older engine
+Requires Unreal Engine 5.8, 5.7 or 5.6 (editor only, Windows or Mac). On older engine
 versions, the plug-in still loads but logs a warning, and some features may not work.
 
 Installed from Fab, the plug-in lives in your engine's
@@ -77,7 +77,7 @@ a window in Unreal after every script save, and *Only when I choose Sync* requir
 **Tools > Sync All Scripts Now**.
 
 By using Python from the Unreal Output Log console, you can change the same settings (replacing `<ScriptName>`):
-For example: `import script_sequencer.editor_entry as ss; ss.configure("<ScriptName>", preset="blocking")`
+For example: `import script_sequencer.editor_entry as ss, ss.configure("<ScriptName>", preset="blocking")`
 or `ss.configure("<ScriptName>", timing="hold", sync="review")`.
 
 **When an editor takes over scene timing**, switch to `Timing: Hold existing timing` in the plug-in Automation
@@ -93,7 +93,7 @@ a minute), 3.5 for action, with gaps, lead-ins, and minimum lengths, all of whic
 - With *Structure: one shot section per [[SHOT:]] note* (chosen at import), each note becomes its own shot
   sequence (`sc010_sh0010`...).
 - With cameras on (the default *Blocking* preset), the plug-in adds an **empty** Cine Camera per shot note,
-  with camera cuts; a sequence with no notes gets one camera for its whole length. *Script timing* and
+  with camera cuts, a sequence with no notes gets one camera for its whole length. *Script timing* and
   *Structure only* add no cameras, and turning cameras off later removes the generated cuts but keeps the
   cameras. A shot size at the start of the note (EWS, WS, MS, MCU, CU, ECU...) sets a starting focal length.
   It never places, animates, moves or deletes a camera.
@@ -139,10 +139,10 @@ Template.
 
 Each script in a project also needs its own file name, ignoring the extension: `Ep01.fountain`
 and `Ep01.fdx` can't both be imported, because the plug-in tells scripts apart by name.
-Importing the second one is refused with a message; rename one of them first.
+Importing the second one is refused with a message, rename one of them first.
 
 To change the structure or naming of a script that's already imported, import it again into
-a new folder; existing sequences are never renamed.
+a new folder, existing sequences are never renamed.
 
 ## The report window
 
@@ -159,7 +159,7 @@ that needs a decision has a dropdown:
 | The script changed under audio or a marker you edited | Reset to script · Keep |
 
 - **Ask first** (sync="review"): the window opens before anything changes.
-  *Apply* uses your choices; *Not now* changes nothing.
+  *Apply* uses your choices, *Not now* changes nothing.
 - **Apply on every save**: the changes apply, and the window opens only when
   something new needs your decision. Choices take effect straight away.
 - Every change shows its dropdown each time. To skip changes you've already
@@ -174,8 +174,8 @@ that needs a decision has a dropdown:
   again. Editing any camera cut in a sequence hands that sequence's cuts to you. The report, found in
   Unreal's Output Log, tells you when the script and owned content disagree.
 - Names (`sc010`, `CAM_sc010_sh0020`) are assigned once and never change. Script scene numbers
-  (`#12#`, `#12A#`) are used when present; inserted scenes get in-between numbers when possible (`sc015`).
-- To hand an owned item back, use `import script_sequencer.editor_entry as ss;`
+  (`#12#`, `#12A#`) are used when present, inserted scenes get in-between numbers when possible (`sc015`).
+- To hand an owned item back, use `import script_sequencer.editor_entry as ss,`
   `ss.reset_items("<ScriptName>", ["L-xxxxxx"])`, replacing ScriptName and using the item's ID,
   including `L-`.
 - Cutting a scene removes its shot section from the master but keeps its Level Sequence.
@@ -213,13 +213,13 @@ One editor per script turns its saves into Sequencer changes:
   in a Multi-User session each change is made once and reaches everyone.
 - **Everyone else** sees "synced automatically by …" in the Output Log. **Sync All Scripts Now**
   still works for them, but asks first. **Take Sync Ownership** moves a script to your
-  editor; ask the current owner to submit their sync record first, so you get the latest version.
+  editor, ask the current owner to submit their sync record first, so you get the latest version.
 - **Check-out before changes.** With source control on, each sync first checks out the
   sync record, its change journal and every asset it's about to change, in one call. New
   sequences and scratch sounds are marked for add after they're saved.
 - **Held files wait.** If someone else has the sync record checked out, or it's out of date, or
   source control can't be reached, nothing changes and the sync tells you why. If someone
-  holds a generated sequence or sound, only the changes to it wait; the report says who holds
+  holds a generated sequence or sound, only the changes to it wait, the report says who holds
   it, and they're applied at a later sync. Anything that person edited meanwhile is kept as
   theirs.
 - **Git.** With the Git LFS 2 plug-in (UEGitPlugin) and LFS locking, a lock someone else holds
@@ -234,12 +234,12 @@ One editor per script turns its saves into Sequencer changes:
 ## Tips
 - Your writing app may not show the `[[id:…]]` notes the plug-in adds, or a new ID it gives a
   pasted line, until you close and reopen the script. TextEdit on Mac, for one, keeps showing
-  the version it opened. The notes are in the file; reopening shows them. Close the script
+  the version it opened. The notes are in the file, reopening shows them. Close the script
   before saying Yes to ID notes, too, so the app doesn't save its old copy over them.
 
 - To see what the plug-in has recorded for a script — every sequence and line with its
   range, what's owned by you, what's cut, and the last few syncs — run
-  `import script_sequencer.editor_entry as ss; ss.inspect("<ScriptName>")` in the Python console.
+  `import script_sequencer.editor_entry as ss, ss.inspect("<ScriptName>")` in the Python console.
   It only reads data, so nothing changes.
 
 - Live updates are faster if the editor keeps working in the background: turn off
@@ -249,7 +249,7 @@ One editor per script turns its saves into Sequencer changes:
 
 ## Data Contract, Tags and Your Own Tools
 Script Sequencer writes what it generates in a documented file format, the **data contract**
-(`Docs/DataContract.md`; a technical spec), so your own pipeline scripts and tools can read it.
+(`Docs/DataContract.md`, a technical spec), so your own pipeline scripts and tools can read it.
 
 - Every generated sequence and scratch Sound Wave carries `suite.*` metadata tags: the line or
   scene ID, the unit code, the character, and the slot. To filter the Content Browser by them,
@@ -274,11 +274,11 @@ for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a sea
 
 ## Known Limitations (Early Access)
 - Built for virtual/CG productions in Unreal. Live-action workflows have limited support.
-- Final Draft files are never changed. Lines are followed by Final Draft's own paragraph IDs (Final Draft
-  13); files without them are matched by text. Revision reports are planned for a future update.
+- Final Draft files are never written to. Lines are followed by Final Draft's own paragraph IDs (Final Draft
+  13). Files without them are matched by text. Revision reports are planned for a future update.
 - Scratch audio is silence: placeholder timing, not a voice. Timing is estimated from word count unless held.
 - Take Recorder takes are protected as owned content. Script-driven take slates are planned for a future update.
-- One editor per script syncs automatically; others sync on request. Batch import across episodes is planned.
+- One editor per script syncs automatically, others sync on request. Batch import across episodes is planned.
 - Structure and naming can't be changed after import without importing again into a new folder.
 
 ## Support
