@@ -77,7 +77,7 @@ a window in Unreal after every script save, and *Only when I choose Sync* requir
 **Tools > Sync All Scripts Now**.
 
 By using Python from the Unreal Output Log console, you can change the same settings (replacing `<ScriptName>`):
-For example: `import script_sequencer.editor_entry as ss, ss.configure("<ScriptName>", preset="blocking")`
+For example: `import script_sequencer.editor_entry as ss; ss.configure("<ScriptName>", preset="blocking")`
 or `ss.configure("<ScriptName>", timing="hold", sync="review")`.
 
 **When an editor takes over scene timing**, switch to `Timing: Hold existing timing` in the plug-in Automation
@@ -175,7 +175,7 @@ that needs a decision has a dropdown:
   Unreal's Output Log, tells you when the script and owned content disagree.
 - Names (`sc010`, `CAM_sc010_sh0020`) are assigned once and never change. Script scene numbers
   (`#12#`, `#12A#`) are used when present, inserted scenes get in-between numbers when possible (`sc015`).
-- To hand an owned item back, use `import script_sequencer.editor_entry as ss,`
+- To hand an owned item back, use `import script_sequencer.editor_entry as ss;`
   `ss.reset_items("<ScriptName>", ["L-xxxxxx"])`, replacing ScriptName and using the item's ID,
   including `L-`.
 - Cutting a scene removes its shot section from the master but keeps its Level Sequence.
@@ -239,7 +239,7 @@ One editor per script turns its saves into Sequencer changes:
 
 - To see what the plug-in has recorded for a script — every sequence and line with its
   range, what's owned by you, what's cut, and the last few syncs — run
-  `import script_sequencer.editor_entry as ss, ss.inspect("<ScriptName>")` in the Python console.
+  `import script_sequencer.editor_entry as ss; ss.inspect("<ScriptName>")` in the Python console.
   It only reads data, so nothing changes.
 
 - Live updates are faster if the editor keeps working in the background: turn off
