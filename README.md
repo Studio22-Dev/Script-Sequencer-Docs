@@ -43,7 +43,7 @@ by its path in the project, so the same path works on every machine.
    `.fountain` or `.fdx` file (try `Sample.fountain`).
 4. For a Fountain script, decide whether ID notes such as `[[id:L-4d5e6f]]` may be
    added. Yes keeps rewritten lines linked more reliably (a `.bak` copy is saved first).
-   IDs are not added to Final Draft files (see *Final Draft* below).
+   Final Draft files are never changed: Final Draft 13 keeps its own IDs (see *Final Draft* below).
 5. Open `/Game/Script/<Episode>/<ScriptName>_Master` (`<Episode>` is the title page's
    `Episode:` value, or the script name if there isn't one). Its **Shots** track holds one
    section per scene (`sc010`, `sc020`...), each its own Level Sequence with an empty
@@ -102,10 +102,14 @@ a minute), 3.5 for action, with gaps, lead-ins, and minimum lengths, all of whic
 - Scene numbers become codes: scene `12` is `sc012`, an inserted `12A` becomes `sc012A`.
 - Dialogue, action, character extensions such as `(V.O.)`, dual dialogue and **Shot** paragraphs are read.
   Parentheticals, transitions, cast lists and act breaks are skipped. Revision marks are ignored.
-- Because the file is never changed, IDs live only in the plug-in's sync record. Lines are matched to their
-  earlier versions by scene number and by how similar the text is, so a line rewritten beyond recognition
-  counts as a new line (its old scratch audio and marker are replaced). Anything you've taken ownership of
-  is still kept.
+- The file is never changed. Final Draft 13 gives every paragraph an ID of its own and keeps it when you
+  edit the text. Script Sequencer follows each line by that ID, so a line rewritten beyond recognition
+  keeps its scratch audio and marker, as in a Fountain script with ID notes. A pasted copy of a line is a
+  new line.
+- Files without these IDs (saved by an older Final Draft version or another app) are matched by scene
+  number and by how similar the text is, so a line rewritten beyond recognition can count as a new line.
+  Opening and saving the script in Final Draft 13 adds the IDs. Anything you've taken ownership of is
+  still kept.
 - **If an .fdx file won't import**, open it in Final Draft and save it again, then retry. If it still fails,
   export it as Fountain from a writing app that reads .fdx files (Fade In, Highland and WriterDuet), and
   import the `.fountain` file instead.
@@ -269,9 +273,9 @@ for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a sea
   these files.
 
 ## Known Limitations (Early Access)
-- Built for CG productions in Unreal. Live-action workflows have limited support.
-- Final Draft import is read-only (see above). Writing IDs back into `.fdx` files and revision reports are
-  planned for a future update.
+- Built for virtual/CG productions in Unreal. Live-action workflows have limited support.
+- Final Draft files are never changed. Lines are followed by Final Draft's own paragraph IDs (Final Draft
+  13); files without them are matched by text. Revision reports are planned for a future update.
 - Scratch audio is silence: placeholder timing, not a voice. Timing is estimated from word count unless held.
 - Take Recorder takes are protected as owned content. Script-driven take slates are planned for a future update.
 - One editor per script syncs automatically; others sync on request. Batch import across episodes is planned.
