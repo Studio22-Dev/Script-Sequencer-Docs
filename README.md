@@ -153,8 +153,7 @@ that needs a decision has a dropdown:
 | A scene's dialogue now needs less time than its shot (timing on hold) | Shorten and Ripple · Keep |
 | A line you edited by hand was cut from the script | Remove anyway · Keep |
 | The script changed under audio or a marker you edited | Reset to script · Keep |
-
-
+<br>
 - **Ask first** (sync="review"): the window opens before anything changes.
   *Apply* uses your choices; *Not now* changes nothing.
 - **Apply on every save**: the changes apply, and the window opens only when
