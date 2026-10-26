@@ -154,6 +154,7 @@ that needs a decision has a dropdown:
 | A line you edited by hand was cut from the script | Remove anyway · Keep |
 | The script changed under audio or a marker you edited | Reset to script · Keep |
 
+
 - **Ask first** (sync="review"): the window opens before anything changes.
   *Apply* uses your choices; *Not now* changes nothing.
 - **Apply on every save**: the changes apply, and the window opens only when
