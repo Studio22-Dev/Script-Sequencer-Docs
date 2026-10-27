@@ -14,6 +14,8 @@ sync as the script changes, without overwriting anyone's work.
 - [Shots and cameras](#shots-and-cameras)
 - [Final Draft (.fdx)](#final-draft-fdx)
 - [Naming and folders](#naming-and-folders)
+- [The report window](#the-report-window)
+- [Markers](#markers)
 - [What the plug-in will and won't change](#what-the-plug-in-will-and-wont-change)
 - [Working with the edit (EDL and OTIO)](#working-with-the-edit-edl-and-otio)
 - [Working in a team](#working-in-a-team)
@@ -49,8 +51,8 @@ by its path in the project, so the same path works on every machine.
    section per scene (`sc010`, `sc020`...), each its own Level Sequence with an empty
    camera (`CAM_sc010`) and its camera cut. Takes, EDL export/import, and Movie Render Queue
    work like any Unreal master sequence.
-6. Keep writing. Depending on the sync mode, saves update Sequencer straight away, show
-   you the changes first, or wait until you use **Sync All Scripts Now**.
+6. Keep writing. Depending on the sync mode, each save updates Sequencer straight away, or
+   waits until you use **Sync All Scripts Now**. The report window then lists what changed.
 
 ## Menu
 - **Import Script (Fountain or FDX)...** — first import, or re-link a script.
@@ -72,13 +74,14 @@ Teams: commit your project's Config/DefaultEditor.ini so everyone shares those s
 | Custom | Any combination of the settings | Your choice |
 
 **Sync** decides when changes reach the Sequencer: *Apply on every save* (default) sends changes to the
-Sequencer automatically every time your script is saved, *Show changes and ask before applying* shows
-a window in Unreal after every script save, and *Only when I choose Sync* requires you to use
-**Tools > Sync All Scripts Now**.
+Sequencer automatically every time your script is saved, and *Only when I choose Sync* waits until you use
+**Tools > Sync All Scripts Now**. Either way, the report window shows what each sync changed (see
+*The report window*). A project or script still set to the old *Show changes and ask before applying*
+option now applies on every save.
 
 By using Python from the Unreal Output Log console, you can change the same settings (replacing `<ScriptName>`):
 For example: `import script_sequencer.editor_entry as ss; ss.configure("<ScriptName>", preset="blocking")`
-or `ss.configure("<ScriptName>", timing="hold", sync="review")`.
+or `ss.configure("<ScriptName>", timing="hold", sync="manual")`.
 
 **When an editor takes over scene timing**, switch to `Timing: Hold existing timing` in the plug-in Automation
 settings, or use `timing="hold"` in the Python console. The script then only updates labels and adds new material, never retiming what exists.
@@ -151,9 +154,9 @@ a new folder, existing sequences are never renamed.
 ## The report window
 
 It's on by default: Project Settings > Plugins > Script Sequencer > Report >
-Report window, or for one script ss.configure("Episode01", report_window=False)
-to turn it off. After a script save, Script Sequencer lists what changed, grouped by scene. A change
-that needs a decision has a dropdown:
+Report window, or for one script `ss.configure("Episode01", report_window=False)`
+to turn it off. After every save or **Sync All Scripts Now** that changes Sequencer, Script Sequencer
+lists what changed, grouped by scene. A change that needs a decision has a dropdown:
 
 | Change | Choices |
 |---|---|
@@ -163,10 +166,10 @@ that needs a decision has a dropdown:
 | The script changed under audio or a marker you edited | Reset to script · Keep |
 | A line you edited by hand is in a scene that was merged into another | Remove anyway · Keep |
 
-- **Ask first** (sync="review"): the window opens before anything changes.
-  *Apply* uses your choices, *Not now* changes nothing.
-- **Apply on every save**: the changes apply, and the window opens only when
-  something new needs your decision. Choices take effect straight away.
+- The changes are applied first. The choices you make in the window are
+  applied as soon as you close it, by one more short sync.
+- An import opens the window only for warnings. With the window off, the report
+  goes to the Output Log, and a message box appears only for new warnings or failures.
 - Every change shows its dropdown each time. To skip changes you've already
   answered with Ignore, Keep or Dismiss, turn on Report > Remember choices:
   you're then asked again only if the scene or line changes.
@@ -181,6 +184,38 @@ that needs a decision has a dropdown:
   Sequence stays, with anything you edited in it. Each line you edited there is
   listed: *Remove anyway* moves the line into the merged scene as a new scratch
   line, *Keep* leaves it where it is.
+
+## Markers
+Script Sequencer adds a marker at each scene heading (on the master) and at each line (in the
+scene's sequence). These settings are in Project Settings > Plugins > Script Sequencer > Markers,
+and each can be set for one script too, for example `ss.configure("<ScriptName>", marker_labels="full")`.
+
+- **Markers follow lines** (on by default). Drag a line's scratch audio in Sequencer and its marker
+  moves to the line's new start once you let go. A marker you moved yourself stays where you put it.
+- **Markers follow shots** (on by default). Drag a shot section on the master's Shots track, or let an
+  EDL or OTIO import move it, and its scene heading marker moves to the section's new start. A marker
+  you moved yourself stays where you put it.
+- **Marker labels** decides how much text each marker shows:
+  - *Full text*: the whole line or heading.
+  - *Shortened (rough fit to zoom)* (default): each label is cut to end about where the next marker
+    starts, at a normal working zoom, and ends in "…". The last marker in a sequence is cut to end
+    where the sequence's lines end.
+  - *Character only*: just the line's speaker, or `(action)` for an action line. Scene headings are
+    shortened. Whether the ID shows as well is up to **Show IDs in markers**.
+- **Show IDs in markers** (on by default). Each label starts with its ID, such as `SCR:L-4d5e6f`, which
+  is how Script Sequencer finds its markers. Turn it off to show only the text: the ID moves into the
+  marker's comment, where it does the same job. On engines whose markers have no comment field (this
+  may include 5.6 and 5.7), the ID stays in the label whatever this setting says, and the Output Log
+  says so once.
+
+Changing **Marker labels** or **Show IDs in markers** updates the markers straight away, without a
+sync, in every script your editor syncs. Markers on lines and shots you own are updated too. A marker
+whose label you edited yourself keeps it. To update one script from the Python console, run
+`import script_sequencer.editor_entry as ss; ss.relabel_markers("<ScriptName>")`.
+
+Sequencer draws each label to the right of its marker, but when the label would run past the right
+edge of the view, it draws it to the left of the marker instead, over the labels before it. That's why
+a label can jump as you scroll. Shorter labels make this rarer, and zooming in avoids it.
 
 ## What The Plug-in Edits
 - It changes only markers, scratch audio sections, shot sections and camera cuts it created.
@@ -294,6 +329,7 @@ for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a sea
 - Take Recorder takes are protected as owned content. Script-driven take slates are planned for a future update.
 - One editor per script syncs automatically, others sync on request. Batch import across episodes is planned.
 - Structure and naming can't be changed after import without importing again into a new folder.
+- Marker labels can still overlap when you zoom far out: Sequencer draws every label in full.
 
 ## Support
 Email studio22.development@gmail.com with your engine version, the Output Log from the sync, and if you can, the script and its `.sync.json`.
