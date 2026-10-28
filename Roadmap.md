@@ -2,7 +2,8 @@
 
 Script Sequencer turns a Fountain or Final Draft script/screenplay into a Sequencer structure in Unreal Engine 5.6–5.8, and keeps it in sync as the script changes, without overwriting anyone's work.
    
-## Current Release: 0.3.0, on Fab
+## Current Release: 0.2.1, on Fab
+**0.3.0 coming very very soon!**
    
 ### What's new in 0.3.0
 - A report window: each sync's changes are shown in one list, with a choice per script edit (ripple later shots, extend the shot, ignore, keep, or remove)
