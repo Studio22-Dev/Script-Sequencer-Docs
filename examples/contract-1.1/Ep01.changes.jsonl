@@ -1,0 +1,2 @@
+{"seq":42,"time":"2026-10-12T14:03:11Z","contract_version":"1.1","source":"script","lines":{"added":["L-91aa02"],"text_changed":["L-4d5e6f"],"removed":[],"moved":[],"retimed":["L-5e6f70"],"changed_after_capture":[]},"units":{"added":[],"removed":[],"retimed":["sc020"]},"episode":"Ep01","revision":{"name":"Blue","color":"#9FC5E8"}}
+{"seq":43,"time":"2026-10-24T10:12:41Z","contract_version":"1.1","source":"capture","episode":"Ep01","lines":{"added":[],"text_changed":[],"removed":[],"moved":[],"retimed":[],"captured":["L-4d5e6f"]},"units":{"added":[],"removed":[],"retimed":[]}}

@@ -1,0 +1,114 @@
+{
+  "contract_version": "1.1",
+  "script": {
+    "key": "Scripts/Ep01.fountain",
+    "format": "fountain",
+    "hash": "3f2c8a6e1b0d4f9a7c5e2b8d6a4f1c3e9b7d5a2c8e6f4b1d3a9c7e5b2d8f6a40"
+  },
+  "master": "/Game/Script/Ep01/Ep01_Master",
+  "frame_rate": {
+    "numerator": 24,
+    "denominator": 1
+  },
+  "sync_owner": "anna@ws-anim-04",
+  "journal_seq": 42,
+  "units": [
+    {
+      "code": "sc010",
+      "scene": "S-1a2b3c",
+      "shot_note": null,
+      "asset": "/Game/Script/Ep01/Sequences/sc010",
+      "state": "active",
+      "range": [
+        0,
+        480
+      ],
+      "owned": false,
+      "cast": [
+        {
+          "character": "ANNA",
+          "binding": "ANNA"
+        }
+      ]
+    },
+    {
+      "code": "sc020",
+      "scene": "S-2b3c4d",
+      "shot_note": null,
+      "asset": "/Game/Script/Ep01/Sequences/sc020",
+      "state": "edit_cut",
+      "range": null,
+      "owned": true
+    }
+  ],
+  "lines": [
+    {
+      "id": "L-4d5e6f",
+      "scene": "S-1a2b3c",
+      "unit": "sc010",
+      "kind": "dialogue",
+      "character": "ANNA",
+      "text": "It's been boiling for an hour.",
+      "text_hash": "9c1e0b7a3d5f2e8c6a4b1d9f7e5c3a2b8d6f4e1c9a7b5d3f2e8c6a4b1d9f7e5c",
+      "state": "active",
+      "range": [
+        240,
+        312
+      ],
+      "audio": {
+        "slot": "scratch",
+        "asset": "/Game/Script/Ep01/Scratch/SW_Scratch_L_4d5e6f",
+        "track": "Dialogue_ANNA",
+        "claimed_by": null
+      },
+      "owned": false,
+      "revision": "Blue",
+      "captures": [
+        {
+          "take": "/Game/Cinematics/Takes/2026-10-24/sc010_3",
+          "slate": "sc010",
+          "number": 3,
+          "recorder": "take_recorder",
+          "time": "2026-10-24T10:12:40Z",
+          "text_hash": "9c1e0b7a3d5f2e8c6a4b1d9f7e5c3a2b8d6f4e1c9a7b5d3f2e8c6a4b1d9f7e5c"
+        }
+      ],
+      "changed_after_capture": false
+    },
+    {
+      "id": "L-01c4aa",
+      "scene": "S-1a2b3c",
+      "unit": "sc010",
+      "kind": "action",
+      "character": "",
+      "text": "Anna stares at the kettle.",
+      "text_hash": "0d4e6f8a1b3c5d7e9f2a4b6c8d0e1f3a5b7c9d2e4f6a8b0c1d3e5f7a9b2c4d6e",
+      "state": "active",
+      "range": [
+        48,
+        216
+      ],
+      "audio": null,
+      "owned": false,
+      "revision": null
+    }
+  ],
+  "internal": {
+    "numbers": {
+      "S-1a2b3c": "010",
+      "S-2b3c4d": "020"
+    }
+  },
+  "episode": "Ep01",
+  "revision": {
+    "name": "Blue",
+    "color": "#9FC5E8",
+    "index": 2
+  },
+  "cast": [
+    {
+      "character": "ANNA",
+      "class": "/Game/Characters/BP_Anna.BP_Anna_C"
+    }
+  ]
+}

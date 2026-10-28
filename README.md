@@ -4,7 +4,7 @@ Script-to-animatic scaffolding for real-time CG animation in Unreal Engine. Scri
 builds Level Sequences from a Fountain or Final Draft (`.fdx`) screenplay and keeps them in
 sync as the script changes, without overwriting anyone's work.
 
-**Version** 0.2.1 (Early Access) · **Unreal Engine** 5.6, 5.7, 5.8 (editor only) · **Platforms** Windows, Mac  
+**Version** 0.3.0 (Early Access) · **Unreal Engine** 5.6, 5.7, 5.8 · **Platforms** Windows, Mac 
 **Download on Fab** [https://fab.com/s/d64f0cb6cf3e](https://fab.com/s/d64f0cb6cf3e) · **Support** [studio22.development@gmail.com](mailto:studio22.development@gmail.com)
 
 ## Contents
@@ -151,8 +151,7 @@ Importing the second one is refused with a message, rename one of them first.
 To change the structure or naming of a script that's already imported, import it again into
 a new folder, existing sequences are never renamed.
 
-## The report window
-
+## The Report Window
 It's on by default: Project Settings > Plugins > Script Sequencer > Report >
 Report window, or for one script `ss.configure("Episode01", report_window=False)`
 to turn it off. After every save or **Sync All Scripts Now** that changes Sequencer, Script Sequencer
@@ -318,8 +317,8 @@ for example, `suite.line=L-4d5e6f` in the Content Browser's search box. If a sea
 - Change journal: `<Project>/ScriptSequencer/<ScriptName>.changes.jsonl`, one line per sync (the last 1,000).
   Check it in with the sync record.
 - Scratch audio: one silent Sound Wave of about 3 KB per dialogue line, in `/Game/Script/<Episode>/Scratch/`.
-- `Docs/DataContract.md` and `Docs/suite_contract_v1.0.schema.json`: the data contract, the technical spec of
-  these files.
+- `Docs/DataContract.md`, `Docs/suite_contract_v1.1.schema.json` and `Docs/suite_contract_v1.0.schema.json`: the
+  data contract (version 1.1), the technical spec of these files.
 
 ## Known Limitations (Early Access)
 - Built for virtual/CG productions in Unreal. Live-action workflows have limited support.
