@@ -1,3 +1,5 @@
+*A capture list exported from the Sample_Shots script that ships with the plug-in*
+
 # Capture list: Sample_Shots
 
 5 lines, about 9 seconds in all.
